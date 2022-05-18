@@ -1,0 +1,22 @@
+{{template "base" .}}
+
+{{define "content"}}
+    <div class="md:container md:mx-auto">
+        <div class="grid grid-flow-row auto-rows-max md:auto-rows-min">
+            <article class="prose lg:prose-xl">
+                <h1>This is the about page</h1>
+                <p>🎄🎁✨</p>
+                <p>🎄🎁✨</p>
+
+                <p>This came from the template: {{index .StringMap "test"}}</p>
+                <p>
+                    {{if ne (index .StringMap "remote_ip") ""}}
+                        Your remote IP address is {{index .StringMap "remote_ip"}}
+                    {{else}}
+                        I don't know your ip address yet. Visit the <a href="/">Home Page</a> so I can set it.
+                    {{end}}
+                </p>
+            </article>
+        </div>
+    </div>
+{{end}}
