@@ -1,0 +1,45 @@
+{{template "base" .}}
+
+{{define "content"}}
+<div class="hero">
+    <div class="hero-content flex-col lg:flex-row-reverse">
+        <div class="text-center lg:text-left">
+            <h1 class="text-5xl font-bold">Make Reservation</h1>
+            <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
+                exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+        </div>
+        <div class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
+            <div class="card-body">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">First Name</span>
+                    </label>
+                    <input type="text" placeholder="John" class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Last Name</span>
+                    </label>
+                    <input type="text" placeholder="Doe" class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Email</span>
+                    </label>
+                    <input type="email" placeholder="johndoe@mail.com" class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Phone Number</span>
+                    </label>
+                    <input type="text" placeholder="0812345678" class="input input-bordered" />
+                </div>
+                <div class="form-control mt-6">
+                    <button class="btn btn-primary">Make Reservation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{end}}
