@@ -10,33 +10,53 @@
         </div>
         <div class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
             <div class="card-body">
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">First Name</span>
-                    </label>
-                    <input type="text" placeholder="John" class="input input-bordered" />
-                </div>
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Last Name</span>
-                    </label>
-                    <input type="text" placeholder="Doe" class="input input-bordered" />
-                </div>
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Email</span>
-                    </label>
-                    <input type="email" placeholder="johndoe@mail.com" class="input input-bordered" />
-                </div>
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Phone Number</span>
-                    </label>
-                    <input type="text" placeholder="0812345678" class="input input-bordered" />
-                </div>
-                <div class="form-control mt-6">
-                    <button class="btn btn-primary">Make Reservation</button>
-                </div>
+                {{ $res := index .Data "reservation"}}
+                <form action="/make-reservation" method="post" novalidate class="">
+                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">First Name</span>
+                            {{with .Form.Errors.Get "first_name"}}
+                            <span class="label-text-alt text-error">{{.}}</span>
+                            {{end}}
+                        </label>
+                        <input id="first_name" name="first_name" type="text" placeholder="John" 
+                        class="input input-bordered {{with .Form.Errors.Get "first_name"}} input-error {{end}}" value="{{$res.FirstName}}" />
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Last Name</span>
+                            {{with .Form.Errors.Get "last_name"}}
+                            <span class="label-text-alt text-error">{{.}}</span>
+                            {{end}}
+                        </label>
+                        <input id="last_name" name="last_name" type="text" placeholder="Doe" 
+                        class="input input-bordered {{with .Form.Errors.Get "last_name"}} input-error {{end}}" value="{{$res.LastName}}" />
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Email</span>
+                            {{with .Form.Errors.Get "email"}}
+                            <span class="label-text-alt text-error">{{.}}</span>
+                            {{end}}
+                        </label>
+                        <input id="email" name="email" type="email" placeholder="johndoe@mail.com" 
+                        class="input input-bordered {{with .Form.Errors.Get "email"}} input-error {{end}}" value="{{$res.Email}}" />
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Phone Number</span>
+                            {{with .Form.Errors.Get "phone"}}
+                            <span class="label-text-alt text-error">{{.}}</span>
+                            {{end}}
+                        </label>
+                        <input id="phone" name="phone" type="text" placeholder="0812345678" 
+                        class="input input-bordered {{with .Form.Errors.Get "phone"}} input-error {{end}}" value="{{$res.Phone}}" />
+                    </div>
+                    <div class="form-control mt-6">
+                        <button class="btn btn-primary">Make Reservation</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
