@@ -10,6 +10,10 @@
 
     <link href="https://cdn.jsdelivr.net/npm/daisyui@2.15.1/dist/full.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/noty@3.2.0-beta/lib/noty.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noty@3.2.0-beta/lib/noty.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noty@3.2.0-beta/lib/themes/nest.css">
+
     {{block "css" .}}
 
     {{end}}
@@ -79,12 +83,9 @@
 
         <!-- Page Content -->
         {{block "content" .}}
-
+        
         {{end}}
 
-        {{block "js" .}}
-
-        {{end}}
         <!-- Footer -->
         <footer class="footer footer-center p-4 bg-base-300 text-base-content">
             <div>
@@ -92,7 +93,37 @@
             </div>
         </footer>
     </div>
+    
+    {{block "js" .}}
+
+    {{end}}
+
+    <script>
+        function showAlert(msg, type) {
+            new Noty({
+                type: type,
+                text: msg,
+                theme: 'nest',
+                layout: 'topRight',
+                closeWith: ['button'],
+                killer: true,
+            }).show();
+        }
+
+        {{with .Error}}
+        showAlert("{{.}}", "error")
+        {{end}}
+
+        {{with .Flash}}
+        showAlert("{{.}}", "success")
+        {{end}}
+
+        {{with .Warning}}
+        showAlert("{{.}}", "warning")
+        {{end}}
+    </script>
 </body>
 
 </html>
 {{end}}
+
