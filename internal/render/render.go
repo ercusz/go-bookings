@@ -3,10 +3,10 @@ package render
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
-	"text/template"
 
 	"github.com/ercusz/go-bookings/internal/config"
 	"github.com/ercusz/go-bookings/internal/models"
@@ -16,6 +16,7 @@ import (
 var functions = template.FuncMap{}
 
 var app *config.AppConfig
+var pathToTemplates = "./templates"
 
 // NewTemplate sets the config for the template package
 func NewTemplate(a *config.AppConfig) {
@@ -65,7 +66,7 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 
 	myCache := map[string]*template.Template{}
 
-	pages, err := filepath.Glob("./templates/*.page.tmpl")
+	pages, err := filepath.Glob(fmt.Sprintf("%s/*.page.tmpl", pathToTemplates))
 	if err != nil {
 		return myCache, err
 	}
@@ -78,13 +79,13 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 			return myCache, err
 		}
 
-		matches, err := filepath.Glob("./templates/*.layout.tmpl")
+		matches, err := filepath.Glob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 		if err != nil {
 			return myCache, err
 		}
 
 		if len(matches) > 0 {
-			ts, err = ts.ParseGlob("./templates/*.layout.tmpl")
+			ts, err = ts.ParseGlob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 			if err != nil {
 				return myCache, err
 			}
