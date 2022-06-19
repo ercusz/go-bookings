@@ -2,17 +2,25 @@
 
 {{define "content"}}
 <div class="hero">
+    {{$res := index .Data "reservation"}}
     <div class="hero-content flex-col lg:flex-row-reverse">
         <div class="text-center lg:text-left">
             <h1 class="text-5xl font-bold">Make Reservation</h1>
-            <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
-                exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+            <p class="py-6">
+                Room: {{$res.Room.RoomName}} <br>
+                Arrival: {{index .StringMap "start_date"}} <br>
+                Departure: {{index .StringMap "end_date"}}
+            </p>
         </div>
         <div class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
             <div class="card-body">
                 {{ $res := index .Data "reservation"}}
                 <form action="/make-reservation" method="post" novalidate class="">
                     <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                    <input type="hidden" name="start_date" value="{{index .StringMap "start_date"}}">
+                    <input type="hidden" name="end_date" value="{{index .StringMap "end_date"}}">
+                    <input type="hidden" name="room_id" value="{{$res.RoomID}}">
+                    
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text">First Name</span>
@@ -53,6 +61,7 @@
                         <input id="phone" name="phone" type="text" placeholder="0812345678" 
                         class="input input-bordered {{with .Form.Errors.Get "phone"}} input-error {{end}}" value="{{$res.Phone}}" />
                     </div>
+
                     <div class="form-control mt-6">
                         <button class="btn btn-primary">Make Reservation</button>
                     </div>
