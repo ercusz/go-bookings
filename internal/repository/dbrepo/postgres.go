@@ -2,7 +2,6 @@ package dbrepo
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/ercusz/go-bookings/internal/models"
@@ -48,8 +47,8 @@ func (m *postgresDBRepo) InsertReservation(res models.Reservation) (int, error) 
 	return newID, nil
 }
 
-// InsertRoomReservation inserts a room restriction into the database
-func (m *postgresDBRepo) InsertRoomReservation(r models.RoomRestriction) error {
+// InsertRoomRestriction inserts a room restriction into the database
+func (m *postgresDBRepo) InsertRoomRestriction(r models.RoomRestriction) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
