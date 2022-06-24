@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -180,6 +182,42 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// send notifications - first to guest
+	htmlMessage := fmt.Sprintf(`
+		<b>Reservation Confirmation</b> <br>
+		Dear %s: <br>
+		This is confirm your reservation from %s to %s.`,
+		reservation.FirstName,
+		reservation.StartDate.Format("2 January 2006"),
+		reservation.EndDate.Format("2 January 2006"),
+	)
+	msg := models.MailData{
+		To:       reservation.Email,
+		From:     "owner@property.com",
+		Subject:  "Reservation Confirmation",
+		Content:  htmlMessage,
+		Template: "basic.html",
+	}
+
+	m.App.MailChan <- msg
+
+	// send notifications - first to property owner
+	htmlMessage = fmt.Sprintf(`
+		<b>Reservation Notification</b> <br>
+		A reservation has been made for %s from %s to %s.`,
+		reservation.Room.RoomName,
+		reservation.StartDate.Format("2 January 2006"),
+		reservation.EndDate.Format("2 January 2006"),
+	)
+	msg = models.MailData{
+		To:      "owner@property.com",
+		From:    "owner@property.com",
+		Subject: "Reservation Notification",
+		Content: htmlMessage,
+	}
+
+	m.App.MailChan <- msg
+
 	m.App.Session.Put(r.Context(), "reservation", reservation)
 
 	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
@@ -341,13 +379,19 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 
 	sd := reservation.StartDate.Format("2 January 2006")
 	ed := reservation.EndDate.Format("2 January 2006")
+	d := math.Ceil(reservation.EndDate.Sub(reservation.StartDate).Hours() / 24)
+
 	stringMap := make(map[string]string)
 	stringMap["start_date"] = sd
 	stringMap["end_date"] = ed
 
+	intMap := make(map[string]int)
+	intMap["duration"] = int(d)
+
 	render.Template(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
 		Data:      data,
 		StringMap: stringMap,
+		IntMap:    intMap,
 	})
 }
 
